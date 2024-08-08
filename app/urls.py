@@ -16,8 +16,14 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include, re_path
+
+from app.views import dashboard, handler404, handler500
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("", dashboard, name='dashboard'),
 ]
+
+handler404 = handler404
+handler500 = handler500
