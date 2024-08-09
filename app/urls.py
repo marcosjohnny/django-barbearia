@@ -16,14 +16,15 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, re_path
-from login.views import login, handler404, handler500
+from django.urls import path, include, re_path
+from login.views import login, register, handler404, handler500
 from dashboard.views import dashboard
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", dashboard, name="dashboard"),
     re_path(r"login$", login, name="login"),
+    path("register", register, name="register"),
 ]
 
 handler404 = handler404

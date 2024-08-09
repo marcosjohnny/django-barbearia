@@ -2,7 +2,13 @@ from django.shortcuts import render
 
 
 def login(request):
-    response = render(request, 'dashboard.html',)
+    response = render(request, 'login.html',)
+    response.status_code = 200
+    return response
+
+
+def register(request):
+    response = render(request, 'register.html',)
     response.status_code = 200
     return response
 
