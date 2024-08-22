@@ -8,26 +8,11 @@ from django.views.generic.edit import FormView
 from django.views.decorators.csrf import csrf_exempt
 
 
-class HomeView(TemplateView):
-    template_name = 'home.html'
-
-
-@csrf_exempt
-class EnhancedLoginView(LoginView):
-    template_name = 'registration/login.html'
-    fields = '__all__'
-    redirect_authenticated_user = True
-
-    def get_success_url(self):
-        return reverse_lazy('tasks')
-
-
-# @csrf_exempt
 class RegisterUserPage(FormView):
     template_name = 'registration/register.html'
     form_class = UserCreationForm
     redirect_authenticated_user = True
-    success_url = reverse_lazy('tasks')
+    success_url = reverse_lazy('login')
 
     def form_valid(self, form):
         user = form.save()
@@ -37,5 +22,5 @@ class RegisterUserPage(FormView):
 
     def get(self, *args, **kwargs):
         if self.request.user.is_authenticated:
-            return redirect('tasks')
+            return redirect('login')
         return super(RegisterUserPage, self).get(*args, **kwargs)
