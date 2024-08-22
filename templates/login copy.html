@@ -36,6 +36,7 @@
 
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form class="space-y-6" action="#" method="POST">
+          {% csrf_token %} {{ form.as_p }}
           <div>
             <label
               for="email"
@@ -44,8 +45,8 @@
             >
             <div class="mt-2">
               <input
-                id="email"
-                name="email"
+                id="id_username"
+                name="username"
                 type="email"
                 autocomplete="email"
                 required
@@ -71,7 +72,7 @@
             </div>
             <div class="mt-2">
               <input
-                id="password"
+                id="id_password"
                 name="password"
                 type="password"
                 autocomplete="current-password"

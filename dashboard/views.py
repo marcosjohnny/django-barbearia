@@ -1,9 +1,7 @@
-from django.shortcuts import render
+from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 
 
-@login_required(login_url="/login")
-def dashboard(request):
-    response = render(request, 'dashboard.html',)
-    response.status_code = 200
-    return response
+@login_required
+class HomeView(TemplateView):
+    template_name = 'home.html'

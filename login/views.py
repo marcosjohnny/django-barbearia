@@ -1,25 +1,41 @@
-from django.shortcuts import render
+from django.contrib.auth import login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView
+from django.views.generic import TemplateView
+from django.urls import reverse_lazy
+from django.shortcuts import redirect
+from django.views.generic.edit import FormView
+from django.views.decorators.csrf import csrf_exempt
 
 
-def login(request):
-    response = render(request, 'login.html',)
-    response.status_code = 200
-    return response
+class HomeView(TemplateView):
+    template_name = 'home.html'
 
 
-def register(request):
-    response = render(request, 'register.html',)
-    response.status_code = 200
-    return response
+@csrf_exempt
+class EnhancedLoginView(LoginView):
+    template_name = 'registration/login.html'
+    fields = '__all__'
+    redirect_authenticated_user = True
+
+    def get_success_url(self):
+        return reverse_lazy('tasks')
 
 
-def handler404(request, exception):
-    response = render(request, '404.html',)
-    response.status_code = 404
-    return response
+# @csrf_exempt
+class RegisterUserPage(FormView):
+    template_name = 'registration/register.html'
+    form_class = UserCreationForm
+    redirect_authenticated_user = True
+    success_url = reverse_lazy('tasks')
 
+    def form_valid(self, form):
+        user = form.save()
+        if user is not None:
+            login(self.request, user)
+        return super(RegisterUserPage, self).form_valid(form)
 
-def handler500(request):
-    response = render(request, '404.html',)
-    response.status_code = 500
-    return response
+    def get(self, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect('tasks')
+        return super(RegisterUserPage, self).get(*args, **kwargs)
